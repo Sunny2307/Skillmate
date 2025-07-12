@@ -30,7 +30,7 @@ const mockUsers = [
 
 const totalPages = 7;
 
-function Home({ isAuthenticated, onLoginClick, onLogoutClick }) {
+function Home({ isAuthenticated, onLogoutClick }) {
   const [search, setSearch] = React.useState('');
   const [availability, setAvailability] = React.useState('');
   const [page, setPage] = React.useState(1);
@@ -43,127 +43,198 @@ function Home({ isAuthenticated, onLoginClick, onLogoutClick }) {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="flex justify-between items-center px-8 py-4 bg-white rounded-2xl shadow-xl w-full mt-6 sticky top-0 z-10">
-        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight cursor-pointer" onClick={() => navigate('/')}>
-          Skill Swap Platform
-        </h1>
-        <div className="flex gap-4 items-center">
-          <button onClick={() => navigate('/swap-requests')} className="text-indigo-600 font-semibold hover:text-indigo-800 transition-colors">
-            Swap request
-          </button>
-          <button onClick={() => navigate('/profile')} className="text-indigo-600 font-semibold hover:text-indigo-800 transition-colors">
-            Profile
-          </button>
-          {isAuthenticated ? (
-            <button
-              onClick={onLogoutClick}
-              className="px-6 py-3 bg-blue-600 text-gray-900 rounded-lg hover:bg-blue-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold shadow-md"
+      <header className="backdrop-blur-lg bg-white/80 border-b border-white/20 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <h1 
+              className="text-3xl font-black text-teal-600 cursor-pointer hover:scale-105 transition-transform duration-300" 
+              onClick={() => navigate('/')}
             >
-              Logout
-            </button>
-          ) : (
-            <button
-              onClick={onLoginClick}
-              className="px-6 py-3 bg-blue-600 text-gray-900 rounded-lg hover:bg-blue-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold shadow-md"
-            >
-              Login
-            </button>
-          )}
+              SkillSwap
+            </h1>
+            <nav className="flex items-center gap-8">
+              <button 
+                onClick={() => navigate('/swap-requests')} 
+                className="text-slate-600 hover:text-indigo-600 font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full"
+              >
+                Swap Requests
+              </button>
+              <button 
+                onClick={() => navigate('/profile')} 
+                className="text-slate-600 hover:text-indigo-600 font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full"
+              >
+                Profile
+              </button>
+              {isAuthenticated ? (
+                <button
+                  onClick={onLogoutClick}
+                  className="px-6 py-2.5 bg-red-100 text-black font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                >
+                  Logout
+                </button>
+              ) : (
+                <button
+                  onClick={() => navigate('/Login')}
+                  className="px-6 py-2.5 bg-teal-100 text-black font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                >
+                  Login
+                </button>
+              )}
+            </nav>
+          </div>
         </div>
       </header>
 
-      {/* Filter/Search Bar */}
-      <div className="px-8 py-6 bg-white rounded-2xl shadow-xl max-w-4xl mx-auto mt-8 mb-6">
-        <div className="flex items-center gap-4">
-          <select
-            value={availability}
-            onChange={e => setAvailability(e.target.value)}
-            className="w-40 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors bg-gray-50 text-gray-900 placeholder-gray-400"
-          >
-            <option value="">Availability</option>
-            <option value="available">Available</option>
-            <option value="busy">Busy</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Search skills..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors bg-gray-50 text-gray-900 placeholder-gray-400 flex-1 min-w-0"
-          />
-          <button className="px-6 py-3 bg-blue-600 text-gray-900 rounded-lg hover:bg-blue-500 hover:scale-105 transition-all duration-300 font-bold shadow-md">
-            Search
-          </button>
+      {/* Hero Section */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-slate-800 mb-4">
+            Discover & Exchange Skills
+          </h2>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            Connect with talented individuals and grow your skillset through meaningful exchanges
+          </p>
         </div>
-      </div>
 
-      {/* User Cards */}
-      <div className="px-8 space-y-6 max-w-4xl mx-auto">
-        {filteredUsers.length > 0 ? (
-          filteredUsers.map(u => (
-            <div key={u.id} className="flex items-center bg-white rounded-2xl p-6 shadow-xl transform transition-all hover:scale-105">
-              <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center mr-8 border-2 border-indigo-100">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 24 24">
-                  <defs>
-                    <linearGradient id="emojiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#6366F1', stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: '#3B82F6', stopOpacity: 1 }} />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    fill="url(#emojiGradient)"
-                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z"
-                  />
-                  <circle cx="9" cy="8" r="1.5" fill="#1F2937" />
-                  <circle cx="15" cy="8" r="1.5" fill="#1F2937" />
-                  <path fill="#1F2937" d="M8 13h8c-.55-.77-2.54-1.5-4-1.5s-3.45.73-4 1.5z" />
+        {/* Search Section */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/30">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="relative flex-1">
+                <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search skills..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="w-full pl-12 pr-4 py-4 bg-white/50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 text-slate-700 placeholder-slate-400"
+                />
+              </div>
+              <select
+                value={availability}
+                onChange={e => setAvailability(e.target.value)}
+                className="px-6 py-4 bg-white/50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 text-slate-700 min-w-[150px]"
+              >
+                <option value="">Availability</option>
+                <option value="available">Available</option>
+                <option value="busy">Busy</option>
+              </select>
+              <button className="px-8 py-4 bg-teal-100 text-black font-semibold rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300 whitespace-nowrap">
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* User Cards */}
+        <div className="max-w-5xl mx-auto space-y-6">
+          {filteredUsers.length > 0 ? (
+            filteredUsers.map(u => (
+              <div key={u.id} className="group bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/30 hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
+                <div className="flex items-center gap-6">
+                  {/* Avatar */}
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-full bg-teal-400 flex items-center justify-center shadow-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" viewBox="0 0 24 24">
+                        <path
+                          fill="#ccfbf1"
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z"
+                        />
+                        <circle cx="9" cy="8" r="1.5" fill="#1F2937" />
+                        <circle cx="15" cy="8" r="1.5" fill="#1F2937" />
+                        <path fill="#1F2937" d="M8 13h8c-.55-.77-2.54-1.5-4-1.5s-3.45.73-4 1.5z" />
+                      </svg>
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                    </div>
+                  </div>
+
+                  {/* User Info */}
+                  <div className="flex-1 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xl font-bold text-slate-800">{u.name}</h3>
+                      <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full">
+                        <svg className="w-4 h-4 text-yellow-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                        <span className="text-sm font-semibold text-yellow-700">{u.rating}/5</span>
+                      </div>
+                    </div>
+
+                    {/* Skills */}
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-medium text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">
+                          Offers:
+                        </span>
+                        {u.skillsOffered.map(skill => (
+                          <span key={skill} className="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium border border-emerald-200">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-lg">
+                          Wants:
+                        </span>
+                        {u.skillsWanted.map(skill => (
+                          <span key={skill} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium border border-blue-200">
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Button */}
+                  <button
+                    className="px-6 py-3 bg-teal-100 text-black font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 group-hover:gap-3"
+                    onClick={() => navigate('/swap-detail')}
+                  >
+                    Request
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-16">
+              <div className="w-24 h-24 mx-auto mb-6 bg-slate-100 rounded-full flex items-center justify-center">
+                <svg className="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
                 </svg>
               </div>
-              <div className="flex-1">
-                <div className="text-lg font-bold mb-2 text-gray-900">{u.name}</div>
-                <div className="mb-1">
-                  <span className="text-green-600 font-medium">Skills Offered: </span>
-                  {u.skillsOffered.map(skill => (
-                    <span key={skill} className="inline-block bg-blue-50 border border-blue-200 rounded-full px-3 py-1 mx-1 text-sm text-blue-700 font-semibold">{skill}</span>
-                  ))}
-                </div>
-                <div className="mb-1">
-                  <span className="text-blue-600 font-medium">Skill Wanted: </span>
-                  {u.skillsWanted.map(skill => (
-                    <span key={skill} className="inline-block bg-green-50 border border-green-200 rounded-full px-3 py-1 mx-1 text-sm text-green-700 font-semibold">{skill}</span>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col items-end gap-2">
-                <button
-                  className="px-6 py-3 bg-blue-600 text-gray-900 rounded-lg hover:bg-blue-500 hover:scale-105 transition-all duration-300 font-bold shadow-md"
-                  style={{ letterSpacing: '0.5px' }}
-                  onClick={() => navigate('/swap-detail')}
-                >
-                  Request
-                </button>
-                <div className="text-gray-500 text-sm">rating <span className="font-bold text-indigo-600">{u.rating}/5</span></div>
-              </div>
+              <h3 className="text-xl font-semibold text-slate-600 mb-2">No matches found</h3>
+              <p className="text-slate-500">Try adjusting your search criteria to find more users.</p>
             </div>
-          ))
-        ) : (
-          <div className="text-center text-gray-600">No users found with matching skills.</div>
-        )}
-      </div>
+          )}
+        </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center items-center gap-2 mt-10 pb-10">
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => setPage(i + 1)}
-            className={`px-3 py-2 rounded-lg border border-gray-200 font-semibold ${page === i + 1 ? 'bg-blue-600 text-gray-900 shadow-md' : 'bg-gray-50 text-gray-900 hover:bg-blue-500 hover:text-gray-900'} transition-all duration-300`}
-          >
-            {i + 1}
-          </button>
-        ))}
+        {/* Pagination */}
+        <div className="flex justify-center items-center gap-2 mt-16">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => setPage(i + 1)}
+              className={`w-12 h-12 rounded-xl font-semibold transition-all duration-300 ${
+                page === i + 1 
+                  ? 'bg-teal-100 text-black shadow-lg scale-110' 
+                  : 'bg-white/70 text-black hover:bg-white hover:shadow-md hover:scale-105 border border-slate-200'
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

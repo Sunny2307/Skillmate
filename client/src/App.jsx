@@ -5,6 +5,7 @@ import Profile from './pages/Profile.jsx';
 import SwapRequests from './pages/SwapRequests.jsx';
 import SwapDetail from './pages/SwapDetail.jsx';
 import SwapRequestForm from './pages/SwapRequestForm.jsx';
+import Login from './pages/Login.jsx';
 
 function NavBar() {
   return (
@@ -14,6 +15,7 @@ function NavBar() {
       <Link to="/swap-requests" className="text-blue-700 font-bold text-lg hover:underline">Swap Requests</Link>
       <Link to="/swap-detail" className="text-blue-700 font-bold text-lg hover:underline">Swap Detail</Link>
       <Link to="/swap-request-form" className="text-blue-700 font-bold text-lg hover:underline">Swap Request Form</Link>
+      <Link to="/login" className="text-blue-700 font-bold text-lg hover:underline">Login</Link>
     </nav>
   );
 }
@@ -24,6 +26,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/swap-requests" element={<SwapRequests />} />
         <Route path="/swap-detail" element={<SwapDetail />} />
