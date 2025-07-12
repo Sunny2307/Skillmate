@@ -1,47 +1,35 @@
-import React, { useState } from 'react';
-import { AuthProvider, useAuth } from './context/AuthContext.jsx';
-import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home.jsx';
+import Profile from './pages/Profile.jsx';
+import SwapRequests from './pages/SwapRequests.jsx';
+import SwapDetail from './pages/SwapDetail.jsx';
+import SwapRequestForm from './pages/SwapRequestForm.jsx';
 
-function AuthModal({ show, onClose }) {
-  const [showLogin, setShowLogin] = useState(true);
-  if (!show) return null;
+function NavBar() {
   return (
-    <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50">
-      <div className="bg-white text-black rounded-lg shadow-2xl p-8 min-w-[350px] relative">
-        <button onClick={onClose} className="absolute top-2 right-2 text-xl font-bold bg-gray-100 rounded-full px-2 py-1 hover:bg-gray-200 transition">&times;</button>
-        {showLogin ? (
-          <Login onSwitchToSignup={() => setShowLogin(false)} />
-        ) : (
-          <Register onSwitchToLogin={() => setShowLogin(true)} />
-        )}
-      </div>
-    </div>
-  );
-}
-
-function AppContent() {
-  const { isAuthenticated, logout } = useAuth();
-  const [showAuthModal, setShowAuthModal] = useState(false);
-
-  return (
-    <>
-      <Home
-        isAuthenticated={isAuthenticated}
-        onLoginClick={() => setShowAuthModal(true)}
-        onLogoutClick={logout}
-      />
-      <AuthModal show={showAuthModal} onClose={() => setShowAuthModal(false)} />
-    </>
+    <nav className="flex gap-6 items-center px-8 py-4 bg-white border-b border-gray-200 shadow-sm sticky top-0 z-20">
+      <Link to="/" className="text-blue-700 font-bold text-lg hover:underline">Home</Link>
+      <Link to="/profile" className="text-blue-700 font-bold text-lg hover:underline">Profile</Link>
+      <Link to="/swap-requests" className="text-blue-700 font-bold text-lg hover:underline">Swap Requests</Link>
+      <Link to="/swap-detail" className="text-blue-700 font-bold text-lg hover:underline">Swap Detail</Link>
+      <Link to="/swap-request-form" className="text-blue-700 font-bold text-lg hover:underline">Swap Request Form</Link>
+    </nav>
   );
 }
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <Router>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/swap-requests" element={<SwapRequests />} />
+        <Route path="/swap-detail" element={<SwapDetail />} />
+        <Route path="/swap-request-form" element={<SwapRequestForm />} />
+      </Routes>
+    </Router>
   );
 }
 

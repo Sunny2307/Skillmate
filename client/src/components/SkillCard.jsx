@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { doc, setDoc } from 'firebase/firestore';
 
 const SkillCard = ({ skill }) => {
   const { user, db } = useContext(AuthContext);
