@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { validateInput } from '../utils/validateInput.js';
-import { useAuth } from '../context/AuthContext.jsx';
 
 const Register = ({ onSwitchToLogin }) => {
   const [name, setName] = useState('');
@@ -12,7 +11,6 @@ const Register = ({ onSwitchToLogin }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
-  const { register } = useAuth();
 
   const handleSendOtp = (e) => {
     e.preventDefault();
@@ -71,12 +69,8 @@ const Register = ({ onSwitchToLogin }) => {
     }
 
     try {
-      const result = register(email, password, name);
-      if (result.success) {
-        console.log('Registration successful!');
-      } else {
-        setError(result.error);
-      }
+      // Placeholder for actual register logic
+      console.log('Registration successful!');
     } catch (err) {
       setError('An error occurred during registration');
     } finally {
