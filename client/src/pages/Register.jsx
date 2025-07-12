@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { validateInput } from '../utils/validateInput.js';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const Register = ({ onSwitchToLogin }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '']);
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const { sendOtp, verifyOtp, signup } = useAuth();
 
-  const handleSendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
@@ -23,11 +23,14 @@ const Register = ({ onSwitchToLogin }) => {
       return;
     }
 
-    // Placeholder for OTP sending logic
-    // TODO: Implement OTP sending logic here
-    console.log('OTP sent to:', email);
-    setIsOtpSent(true);
-    setIsLoading(false);
+    try {
+      await sendOtp(email, name);
+      setIsOtpSent(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleOtpChange = (index, value) => {
@@ -36,18 +39,25 @@ const Register = ({ onSwitchToLogin }) => {
       newOtp[index] = value;
       setOtp(newOtp);
 
-      // Auto-focus next input
       if (value && index < 3) {
         document.getElementById(`otp-${index + 1}`).focus();
       }
 
-      // Check if OTP is complete
       if (newOtp.every((digit) => digit !== '')) {
-        // Placeholder for OTP verification logic
-        // TODO: Implement OTP verification logic here
-        console.log('OTP entered:', newOtp.join(''));
-        setIsOtpVerified(true);
+        handleVerifyOtp(newOtp.join(''));
       }
+    }
+  };
+
+  const handleVerifyOtp = async (otpValue) => {
+    setIsLoading(true);
+    try {
+      await verifyOtp(email, otpValue);
+      setIsOtpVerified(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -56,23 +66,10 @@ const Register = ({ onSwitchToLogin }) => {
     setError(null);
     setIsLoading(true);
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      setIsLoading(false);
-      return;
-    }
-
-    if (!validateInput({ email, password, name })) {
-      setError('Please enter valid information. Password must be at least 6 characters.');
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      // Placeholder for actual register logic
-      console.log('Registration successful!');
+      await signup(email, name);
     } catch (err) {
-      setError('An error occurred during registration');
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -154,46 +151,14 @@ const Register = ({ onSwitchToLogin }) => {
               </div>
             </div>
           ) : (
-            <>
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors bg-gray-50 text-gray-900 placeholder-gray-400"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
-                  Confirm Password
-                </label>
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors bg-gray-50 text-gray-900 placeholder-gray-400"
-                  required
-                />
-              </div>
-
-              <button
-                type="button"
-                onClick={handleRegister}
-                disabled={isLoading}
-                className="w-full px-6 py-4 bg-blue-600 text-gray-900 rounded-lg hover:bg-blue-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold shadow-md"
-              >
-                {isLoading ? 'Creating Account...' : 'Sign Up'}
-              </button>
-            </>
+            <button
+              type="button"
+              onClick={handleRegister}
+              disabled={isLoading}
+              className="w-full px-6 py-4 bg-blue-600 text-gray-900 rounded-lg hover:bg-blue-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-bold shadow-md"
+            >
+              {isLoading ? 'Registering...' : 'Sign Up'}
+            </button>
           )}
         </div>
 

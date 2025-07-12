@@ -130,18 +130,15 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ error: 'Email and name are required' });
     }
 
-    // Check if user already exists in Firebase Authentication
     try {
       await admin.auth().getUserByEmail(email);
       return res.status(400).json({ error: 'User with this email already exists' });
     } catch (authError) {
       if (authError.code !== 'auth/user-not-found') {
-        throw authError; // Re-throw other errors
+        throw authError;
       }
-      // User does not exist, proceed with signup
     }
 
-    // Generate a temporary password (e.g., a random string)
     const tempPassword = crypto.randomBytes(8).toString('hex');
     const userRecord = await admin.auth().createUser({
       email,
@@ -160,7 +157,7 @@ exports.signup = async (req, res) => {
         role: 'user',
         isBanned: false,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        profileComplete: false, // Flag to indicate profile (password, availability) is pending
+        profileComplete: false,
       });
     }
 
@@ -197,5 +194,28 @@ exports.login = async (req, res) => {
     });
   } catch (error) {
     res.status(401).json({ error: 'Invalid email or password' });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { password, availability } = req.body;
+    if (!password || !availability) {
+      return res.status(400).json({ error: 'Password and availability are required' });
+    }
+
+    const userRef = db.collection('users').doc(req.user.uid);
+    const userDoc = await userRef.get();
+    if (!userDoc.exists) return res.status(404).json({ error: 'User not found' });
+
+    await admin.auth().updateUser(req.user.uid, { password });
+    await userRef.update({
+      availability,
+      profileComplete: true,
+    });
+
+    res.json({ message: 'Profile updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { validateInput } from '../utils/validateInput.js';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const Login = ({ onSwitchToSignup }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,10 +21,9 @@ const Login = ({ onSwitchToSignup }) => {
     }
 
     try {
-      // Mock login logic
-      console.log('Login successful!');
+      await login(email, password);
     } catch (err) {
-      setError('An error occurred during login');
+      setError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +88,7 @@ const Login = ({ onSwitchToSignup }) => {
           <p className="text-sm text-blue-700 text-center">
             <strong>Demo Account:</strong><br />
             Email: test@example.com<br />
-            Password: password123
+            Password: password123 (after initial setup)
           </p>
         </div>
       </div>
