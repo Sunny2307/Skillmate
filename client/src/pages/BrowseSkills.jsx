@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { collection, query, where, limit, startAfter, getDocs } from 'firebase/firestore';
 import { debounce } from 'lodash';
-import { AuthContext } from '../context/AuthContext';
 import SkillCard from '../components/SkillCard';
+import { fetchSkills } from '../utils/api';
 
 const BrowseSkills = () => {
-  const { db } = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [page, setPage] = useState(1);
@@ -15,36 +13,22 @@ const BrowseSkills = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchSkills = async () => {
+  const loadSkills = async () => {
     setLoading(true);
     try {
-      let q = collection(db, 'skills');
-      if (searchTerm) {
-        q = query(q, where('name', '>=', searchTerm), where('name', '<=', searchTerm + '\uf8ff'));
-      }
-      if (filterType !== 'all') {
-        q = query(q, where('type', '==', filterType));
-      }
-      q = query(q, limit(10));
-      if (lastDoc) {
-        q = query(q, startAfter(lastDoc));
-      }
-
-      const snapshot = await getDocs(q);
-      const fetchedSkills = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setSkills(fetchedSkills);
-      setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+      const { skills, lastDoc: newLastDoc } = await fetchSkills(searchTerm, filterType, page, 10, lastDoc);
+      setSkills(skills);
+      setLastDoc(newLastDoc);
       setError(null);
     } catch (err) {
-      setError('Failed to load skills');
-      console.error(err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSkills();
+    loadSkills();
   }, [searchTerm, filterType, page]);
 
   const handleSearch = debounce((e) => {
@@ -56,7 +40,7 @@ const BrowseSkills = () => {
   return (
     <div className="container py-8">
       <nav className="text-sm text-gray-600 mb-4" aria-label="breadcrumb">
-        <Link to="/" className="hover:text-accent">Home</Link>  Browse Skills
+        <Link to="/" className="hover:text-accent">Home</Link> Browse Skills
       </nav>
       <h1 className="text-3xl font-display text-dark mb-6">Find Skills to Swap</h1>
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
