@@ -35,97 +35,105 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f3f6f8]">
-      {/* Nav */}
-      <nav className="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200 shadow-sm">
-        <div className="flex gap-8 items-center">
-          <span className="text-2xl font-bold text-blue-700">User profile <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full ml-2 text-base font-semibold">{profile.name}</span></span>
-          <button className="text-blue-700 font-semibold underline underline-offset-2">Swap request</button>
-          <button className="text-blue-700 font-semibold underline underline-offset-2">Home</button>
-        </div>
-        <img src={profile.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(profile.name)} alt="Profile" className="w-12 h-12 rounded-full border-2 border-blue-200" />
-      </nav>
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-lg mt-10 p-8 border border-gray-100">
-        <div className="flex gap-8 items-center mb-8">
-          <div className="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-lg border-2 border-blue-100 relative">
-            <img src={profile.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(profile.name)} alt="Profile" className="w-full h-full object-cover rounded-full" />
-            <button className="absolute bottom-2 right-2 bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold shadow">Edit</button>
+    <div className="min-h-screen bg-[#f3f6f8] flex flex-col items-center">
+      {/* Banner Section */}
+      <div className="w-full max-w-4xl relative">
+        <div className="h-40 bg-gradient-to-r from-blue-200 via-blue-100 to-blue-300 rounded-t-xl"></div>
+        {/* Profile Photo - overlaps and is centered */}
+        <div className="absolute left-1/2 top-36 transform -translate-x-1/2 z-10">
+          <div className="w-36 h-36 md:w-40 md:h-40 rounded-full border-4 border-white shadow-lg overflow-hidden bg-white flex items-center justify-center">
+            <img
+              src={profile.photo || 'https://randomuser.me/api/portraits/men/32.jpg'}
+              alt="Profile"
+              className="w-full h-full object-cover"
+              style={{ background: '#e0e7ef' }}
+            />
           </div>
-          <div className="flex-1 space-y-4">
-            <div className="flex gap-4 items-center">
-              <label className="font-semibold w-28">Name</label>
-              {editing ? (
-                <input className="border border-gray-300 rounded px-3 py-1 flex-1" value={tempProfile.name} onChange={e => setTempProfile({ ...tempProfile, name: e.target.value })} />
-              ) : (
-                <span>{profile.name}</span>
-              )}
-            </div>
-            <div className="flex gap-4 items-center">
-              <label className="font-semibold w-28">Location</label>
-              {editing ? (
-                <input className="border border-gray-300 rounded px-3 py-1 flex-1" value={tempProfile.location} onChange={e => setTempProfile({ ...tempProfile, location: e.target.value })} />
-              ) : (
-                <span>{profile.location}</span>
-              )}
-            </div>
-            <div className="flex gap-4 items-center">
-              <label className="font-semibold w-28">Skills Offered</label>
-              {editing ? (
-                <input className="border border-gray-300 rounded px-3 py-1 flex-1" value={tempProfile.skillsOffered.join(', ')} onChange={e => setTempProfile({ ...tempProfile, skillsOffered: e.target.value.split(',').map(s => s.trim()) })} />
-              ) : (
-                <span>{profile.skillsOffered.map(skill => <span key={skill} className="inline-block bg-blue-50 border border-blue-200 rounded-full px-3 py-1 mx-1 text-sm text-blue-700 font-semibold">{skill}</span>)}</span>
-              )}
-            </div>
-            <div className="flex gap-4 items-center">
-              <label className="font-semibold w-28">Skills wanted</label>
-              {editing ? (
-                <input className="border border-gray-300 rounded px-3 py-1 flex-1" value={tempProfile.skillsWanted.join(', ')} onChange={e => setTempProfile({ ...tempProfile, skillsWanted: e.target.value.split(',').map(s => s.trim()) })} />
-              ) : (
-                <span>{profile.skillsWanted.map(skill => <span key={skill} className="inline-block bg-green-50 border border-green-200 rounded-full px-3 py-1 mx-1 text-sm text-green-700 font-semibold">{skill}</span>)}</span>
-              )}
-            </div>
-            <div className="flex gap-4 items-center">
-              <label className="font-semibold w-28">Availability</label>
-              {editing ? (
-                <input className="border border-gray-300 rounded px-3 py-1 flex-1" value={tempProfile.availability} onChange={e => setTempProfile({ ...tempProfile, availability: e.target.value })} />
-              ) : (
-                <span>{profile.availability}</span>
-              )}
-            </div>
-            <div className="flex gap-4 items-center">
-              <label className="font-semibold w-28">Profile</label>
-              {editing ? (
-                <select className="border border-gray-300 rounded px-3 py-1 flex-1" value={tempProfile.profileType} onChange={e => setTempProfile({ ...tempProfile, profileType: e.target.value })}>
-                  <option value="Public">Public</option>
-                  <option value="Private">Private</option>
-                </select>
-              ) : (
-                <span>{profile.profileType}</span>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="flex gap-4 justify-end mt-8">
-          {editing ? (
-            <>
-              <button onClick={handleSave} className="bg-green-600 text-white px-6 py-2 rounded font-bold shadow hover:bg-green-700">Save</button>
-              <button onClick={handleDiscard} className="bg-red-100 text-red-600 px-6 py-2 rounded font-bold shadow hover:bg-red-200">Discard</button>
-            </>
-          ) : (
-            <button onClick={handleEdit} className="bg-blue-600 text-white px-6 py-2 rounded font-bold shadow hover:bg-blue-700">Edit Profile</button>
-          )}
         </div>
       </div>
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold text-dark mb-4">Your Skills</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockSkills.map((skill) => (
-            <div key={skill.id} className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-blue-800 font-semibold shadow">
-              <div>{skill.name}</div>
-              <div className="text-xs text-blue-600 mt-1">{skill.type === 'offered' ? 'Offered' : 'Wanted'}</div>
-              <div className="text-xs text-gray-500 mt-2">{skill.description}</div>
-            </div>
-          ))}
+      {/* Main Card */}
+      <div className="w-full max-w-4xl bg-white rounded-b-xl shadow-lg border border-gray-100 pt-40 pb-8 px-8 relative -mt-12 flex flex-col items-center">
+        <div className="flex flex-col items-center w-full mt-16">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-4xl font-extrabold text-gray-900" style={{textShadow: '0 4px 16px rgba(0,0,0,0.25), 0 1px 0 #fff'}}> {profile.name} </span>
+            <span className="ml-1 text-purple-600 text-2xl" title="Verified">✔️</span>
+          </div>
+          <div className="text-gray-500 text-base flex items-center gap-2">
+            {profile.location} · <a href="#" className="text-purple-600 hover:underline">Contact info</a>
+          </div>
+        </div>
+      </div>
+      {/* Skills and Edit Section */}
+      <div className="w-full max-w-4xl bg-white rounded-xl shadow border border-gray-100 mt-8 p-8 flex flex-col md:flex-row gap-12">
+        {/* Skills Offered & Wanted */}
+        <div className="flex-1">
+          <div className="mb-2 text-xl font-semibold text-gray-800">Skills Offered</div>
+          <div className="flex flex-wrap gap-3 mb-6">
+            {profile.skillsOffered.map(skill => (
+              <span key={skill} className="inline-block bg-blue-50 border border-blue-300 rounded-full px-4 py-2 text-base text-blue-700 font-semibold shadow-sm">{skill}</span>
+            ))}
+          </div>
+          <div className="mb-2 text-xl font-semibold text-gray-800">Skills Wanted</div>
+          <div className="flex flex-wrap gap-3">
+            {profile.skillsWanted.map(skill => (
+              <span key={skill} className="inline-block bg-green-50 border border-green-300 rounded-full px-4 py-2 text-base text-green-700 font-semibold shadow-sm">{skill}</span>
+            ))}
+          </div>
+        </div>
+        {/* Edit Profile Section */}
+        <div className="md:w-1/2 flex flex-col gap-4 bg-[#f8fafc] rounded-xl p-6 border border-gray-100 shadow-sm">
+          <div className="text-xl font-semibold text-gray-800 mb-2">Edit Profile</div>
+          <div className="flex flex-col gap-3">
+            <label className="font-semibold">Name</label>
+            {editing ? (
+              <input className="border border-gray-300 rounded px-3 py-2 text-base" value={tempProfile.name} onChange={e => setTempProfile({ ...tempProfile, name: e.target.value })} />
+            ) : (
+              <div className="text-base text-gray-700">{profile.name}</div>
+            )}
+            <label className="font-semibold">Location</label>
+            {editing ? (
+              <input className="border border-gray-300 rounded px-3 py-2 text-base" value={tempProfile.location} onChange={e => setTempProfile({ ...tempProfile, location: e.target.value })} />
+            ) : (
+              <div className="text-base text-gray-700">{profile.location}</div>
+            )}
+            <label className="font-semibold">Skills Offered</label>
+            {editing ? (
+              <input className="border border-gray-300 rounded px-3 py-2 text-base" value={tempProfile.skillsOffered.join(', ')} onChange={e => setTempProfile({ ...tempProfile, skillsOffered: e.target.value.split(',').map(s => s.trim()) })} />
+            ) : (
+              <div className="flex flex-wrap gap-2">{profile.skillsOffered.map(skill => <span key={skill} className="inline-block bg-blue-50 border border-blue-300 rounded-full px-3 py-1 text-sm text-blue-700 font-semibold shadow-sm">{skill}</span>)}</div>
+            )}
+            <label className="font-semibold">Skills Wanted</label>
+            {editing ? (
+              <input className="border border-gray-300 rounded px-3 py-2 text-base" value={tempProfile.skillsWanted.join(', ')} onChange={e => setTempProfile({ ...tempProfile, skillsWanted: e.target.value.split(',').map(s => s.trim()) })} />
+            ) : (
+              <div className="flex flex-wrap gap-2">{profile.skillsWanted.map(skill => <span key={skill} className="inline-block bg-green-50 border border-green-300 rounded-full px-3 py-1 text-sm text-green-700 font-semibold shadow-sm">{skill}</span>)}</div>
+            )}
+            <label className="font-semibold">Availability</label>
+            {editing ? (
+              <input className="border border-gray-300 rounded px-3 py-2 text-base" value={tempProfile.availability} onChange={e => setTempProfile({ ...tempProfile, availability: e.target.value })} />
+            ) : (
+              <div className="text-base text-gray-700">{profile.availability}</div>
+            )}
+            <label className="font-semibold">Profile Type</label>
+            {editing ? (
+              <select className="border border-gray-300 rounded px-3 py-2 text-base" value={tempProfile.profileType} onChange={e => setTempProfile({ ...tempProfile, profileType: e.target.value })}>
+                <option value="Public">Public</option>
+                <option value="Private">Private</option>
+              </select>
+            ) : (
+              <div className="text-base text-gray-700">{profile.profileType}</div>
+            )}
+          </div>
+          <div className="flex gap-3 mt-4">
+            {editing ? (
+              <>
+                <button onClick={handleSave} className="bg-indigo-600 text-black px-6 py-2 rounded font-bold shadow hover:bg-indigo-700">Save</button>
+                <button onClick={handleDiscard} className="bg-red-100 text-black px-6 py-2 rounded font-bold shadow hover:bg-red-200">Discard</button>
+              </>
+            ) : (
+              <button onClick={handleEdit} className="bg-indigo-600 text-black px-6 py-2 rounded font-bold shadow hover:bg-indigo-700">Edit Profile</button>
+            )}
+          </div>
         </div>
       </div>
     </div>

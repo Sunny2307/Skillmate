@@ -11,20 +11,24 @@ export default function SwapRequestForm() {
         <h2 className="text-2xl font-bold text-blue-700 mb-6 text-center">Send Swap Request</h2>
         <form className="space-y-5">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Choose one of your offered skills</label>
-            <select value={offeredSkill} onChange={e => setOfferedSkill(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 bg-white text-gray-900">
-              <option value="">Select a skill</option>
-              <option value="JavaScript">JavaScript</option>
-              <option value="Web Design">Web Design</option>
-            </select>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Your Offered Skill</label>
+            <input
+              type="text"
+              value={offeredSkill}
+              onChange={e => setOfferedSkill(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 bg-white text-gray-900"
+              placeholder="Type your skill (e.g. JavaScript, Web Design)"
+            />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">Choose one of their wanted skills</label>
-            <select value={wantedSkill} onChange={e => setWantedSkill(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 bg-white text-gray-900">
-              <option value="">Select a skill</option>
-              <option value="Python">Python</option>
-              <option value="Game Design">Game Design</option>
-            </select>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Skill You Want to Learn</label>
+            <input
+              type="text"
+              value={wantedSkill}
+              onChange={e => setWantedSkill(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 bg-white text-gray-900"
+              placeholder="Type the skill you want to learn (e.g. Python, Game Design)"
+            />
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Message</label>
