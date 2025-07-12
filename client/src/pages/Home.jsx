@@ -44,49 +44,6 @@ function Home({ isAuthenticated, onLogoutClick }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="backdrop-blur-lg bg-white/80 border-b border-white/20 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <h1 
-              className="text-3xl font-black text-teal-600 cursor-pointer hover:scale-105 transition-transform duration-300" 
-              onClick={() => navigate('/')}
-            >
-              SkillSwap
-            </h1>
-            <nav className="flex items-center gap-8">
-              <button 
-                onClick={() => navigate('/swap-requests')} 
-                className="text-slate-600 hover:text-indigo-600 font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full"
-              >
-                Swap Requests
-              </button>
-              <button 
-                onClick={() => navigate('/profile')} 
-                className="text-slate-600 hover:text-indigo-600 font-medium transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-indigo-600 after:transition-all hover:after:w-full"
-              >
-                Profile
-              </button>
-              {isAuthenticated ? (
-                <button
-                  onClick={onLogoutClick}
-                  className="px-6 py-2.5 bg-red-100 text-black font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
-                >
-                  Logout
-                </button>
-              ) : (
-                <button
-                  onClick={() => navigate('/Login')}
-                  className="px-6 py-2.5 bg-teal-100 text-black font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
-                >
-                  Login
-                </button>
-              )}
-            </nav>
-          </div>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="text-center mb-12">

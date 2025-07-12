@@ -1,121 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext.jsx';
+import React, { useState } from 'react';
+
+const initialProfile = {
+  name: 'Cheerful Raven',
+  location: 'New York',
+  skillsOffered: ['JavaScript', 'Web design', 'Photoshop'],
+  skillsWanted: ['Python', 'Game design'],
+  availability: 'weekends',
+  profileType: 'Public',
+  photo: '',
+};
 
 const Profile = () => {
-  const { user, logout } = useAuth();
-  const [profile, setProfile] = useState({
-    name: '',
-    location: '',
-    skillsOffered: [],
-    skillsWanted: [],
-    availability: '',
-    profileType: 'Public',
-    photo: '',
-  });
+  const [profile, setProfile] = useState(initialProfile);
   const [editing, setEditing] = useState(false);
   const [tempProfile, setTempProfile] = useState(profile);
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!user) return;
-      try {
-        const response = await fetch('http://localhost:3000/api/users/me', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setProfile(data);
-          setTempProfile(data);
-        } else {
-          setError(data.error);
-        }
-      } catch (err) {
-        setError('Failed to fetch profile');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchProfile();
-  }, [user]);
 
   const handleEdit = () => {
     setEditing(true);
     setTempProfile(profile);
   };
-
   const handleDiscard = () => {
     setEditing(false);
     setTempProfile(profile);
   };
-
-  const handleSave = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch('http://localhost:3000/api/users/me', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({
-          name: tempProfile.name,
-          location: tempProfile.location,
-          skillsOffered: tempProfile.skillsOffered,
-          skillsWanted: tempProfile.skillsWanted,
-          availability: tempProfile.availability,
-          isPublic: tempProfile.profileType === 'Public',
-        }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setProfile(tempProfile);
-        setEditing(false);
-      } else {
-        setError(data.error);
-      }
-    } catch (err) {
-      setError('Failed to update profile');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSave = () => {
+    setProfile(tempProfile);
+    setEditing(false);
+    setError(null);
   };
-
-  const handleProfileComplete = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch('http://localhost:3000/api/users/me/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({
-          password: tempProfile.password, // Add password field to tempProfile state
-          availability: tempProfile.availability,
-        }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setProfile({ ...tempProfile, profileComplete: true });
-        setEditing(false);
-      } else {
-        setError(data.error);
-      }
-    } catch (err) {
-      setError('Failed to complete profile');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!user) return <div>Please log in to view your profile.</div>;
 
   return (
-    <div className="min-h-screen bg-[#f3f6f8] flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex flex-col items-center">
       <div className="w-full max-w-4xl relative">
         <div className="h-40 bg-gradient-to-r from-blue-200 via-blue-100 to-blue-300 rounded-t-xl"></div>
         <div className="absolute left-1/2 top-36 transform -translate-x-1/2 z-10">
@@ -169,7 +85,7 @@ const Profile = () => {
               <input
                 className="border border-gray-300 rounded px-3 py-2 text-base"
                 value={tempProfile.name}
-                onChange={(e) => setTempProfile({ ...tempProfile, name: e.target.value })}
+                onChange={e => setTempProfile({ ...tempProfile, name: e.target.value })}
               />
             ) : (
               <div className="text-base text-gray-700">{profile.name}</div>
@@ -179,7 +95,7 @@ const Profile = () => {
               <input
                 className="border border-gray-300 rounded px-3 py-2 text-base"
                 value={tempProfile.location}
-                onChange={(e) => setTempProfile({ ...tempProfile, location: e.target.value })}
+                onChange={e => setTempProfile({ ...tempProfile, location: e.target.value })}
               />
             ) : (
               <div className="text-base text-gray-700">{profile.location}</div>
@@ -189,7 +105,7 @@ const Profile = () => {
               <input
                 className="border border-gray-300 rounded px-3 py-2 text-base"
                 value={tempProfile.skillsOffered.join(', ')}
-                onChange={(e) => setTempProfile({ ...tempProfile, skillsOffered: e.target.value.split(',').map((s) => s.trim()) })}
+                onChange={e => setTempProfile({ ...tempProfile, skillsOffered: e.target.value.split(',').map((s) => s.trim()) })}
               />
             ) : (
               <div className="flex flex-wrap gap-2">
@@ -205,7 +121,7 @@ const Profile = () => {
               <input
                 className="border border-gray-300 rounded px-3 py-2 text-base"
                 value={tempProfile.skillsWanted.join(', ')}
-                onChange={(e) => setTempProfile({ ...tempProfile, skillsWanted: e.target.value.split(',').map((s) => s.trim()) })}
+                onChange={e => setTempProfile({ ...tempProfile, skillsWanted: e.target.value.split(',').map((s) => s.trim()) })}
               />
             ) : (
               <div className="flex flex-wrap gap-2">
@@ -221,7 +137,7 @@ const Profile = () => {
               <input
                 className="border border-gray-300 rounded px-3 py-2 text-base"
                 value={tempProfile.availability}
-                onChange={(e) => setTempProfile({ ...tempProfile, availability: e.target.value })}
+                onChange={e => setTempProfile({ ...tempProfile, availability: e.target.value })}
               />
             ) : (
               <div className="text-base text-gray-700">{profile.availability}</div>
@@ -231,7 +147,7 @@ const Profile = () => {
               <select
                 className="border border-gray-300 rounded px-3 py-2 text-base"
                 value={tempProfile.profileType}
-                onChange={(e) => setTempProfile({ ...tempProfile, profileType: e.target.value })}
+                onChange={e => setTempProfile({ ...tempProfile, profileType: e.target.value })}
               >
                 <option value="Public">Public</option>
                 <option value="Private">Private</option>
@@ -239,60 +155,16 @@ const Profile = () => {
             ) : (
               <div className="text-base text-gray-700">{profile.profileType}</div>
             )}
-            {!profile.profileComplete && editing && (
-              <div>
-                <label className="font-semibold">Password</label>
-                <input
-                  type="password"
-                  className="border border-gray-300 rounded px-3 py-2 text-base"
-                  value={tempProfile.password || ''}
-                  onChange={(e) => setTempProfile({ ...tempProfile, password: e.target.value })}
-                  placeholder="Set your password"
-                />
-              </div>
-            )}
           </div>
           <div className="flex gap-3 mt-4">
             {editing ? (
               <>
-                {profile.profileComplete ? (
-                  <button
-                    onClick={handleSave}
-                    disabled={isLoading}
-                    className="bg-indigo-600 text-white px-6 py-2 rounded font-bold shadow hover:bg-indigo-700 disabled:opacity-50"
-                  >
-                    {isLoading ? 'Saving...' : 'Save'}
-                  </button>
-                ) : (
-                  <button
-                    onClick={handleProfileComplete}
-                    disabled={isLoading || !tempProfile.password || !tempProfile.availability}
-                    className="bg-indigo-600 text-white px-6 py-2 rounded font-bold shadow hover:bg-indigo-700 disabled:opacity-50"
-                  >
-                    {isLoading ? 'Completing...' : 'Complete Profile'}
-                  </button>
-                )}
-                <button
-                  onClick={handleDiscard}
-                  className="bg-red-100 text-black px-6 py-2 rounded font-bold shadow hover:bg-red-200"
-                >
-                  Discard
-                </button>
+                <button onClick={handleSave} className="bg-indigo-600 text-white px-6 py-2 rounded font-bold shadow hover:bg-indigo-700">Save</button>
+                <button onClick={handleDiscard} className="bg-red-100 text-black px-6 py-2 rounded font-bold shadow hover:bg-red-200">Discard</button>
               </>
             ) : (
-              <button
-                onClick={handleEdit}
-                className="bg-indigo-600 text-white px-6 py-2 rounded font-bold shadow hover:bg-indigo-700"
-              >
-                Edit Profile
-              </button>
+              <button onClick={handleEdit} className="bg-indigo-600 text-white px-6 py-2 rounded font-bold shadow hover:bg-indigo-700">Edit Profile</button>
             )}
-            <button
-              onClick={logout}
-              className="bg-gray-500 text-white px-6 py-2 rounded font-bold shadow hover:bg-gray-600"
-            >
-              Logout
-            </button>
           </div>
         </div>
       </div>

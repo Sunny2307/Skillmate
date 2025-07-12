@@ -6,9 +6,9 @@ export default function SwapRequestForm() {
   const [message, setMessage] = useState('');
 
   return (
-    <div className="min-h-screen bg-[#f3f6f8] flex items-center justify-center">
-      <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 max-w-md w-full">
-        <h2 className="text-2xl font-bold text-blue-700 mb-6 text-center">Send Swap Request</h2>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex flex-col items-center">
+      <div className="bg-white rounded-2xl shadow-xl border border-white/30 max-w-4xl w-full mx-auto p-10 mt-12">
+        <h2 className="text-3xl font-bold text-blue-700 mb-8 text-center">Send Swap Request</h2>
         <form className="space-y-5">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">Your Offered Skill</label>
@@ -34,7 +34,7 @@ export default function SwapRequestForm() {
             <label className="block text-sm font-semibold text-gray-700 mb-1">Message</label>
             <textarea value={message} onChange={e => setMessage(e.target.value)} className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-200 focus:border-blue-400 bg-white text-gray-900 min-h-[80px]" placeholder="Write a message..." />
           </div>
-          <button type="submit" className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold shadow-lg text-lg transition-colors">Submit</button>
+          <button type="submit" className="w-full px-4 py-3 bg-blue-600 text-black rounded-lg hover:bg-blue-700 font-bold shadow-lg text-lg transition-colors">Submit</button>
         </form>
       </div>
     </div>

@@ -29,26 +29,18 @@ export default function SwapRequests() {
   const [page, setPage] = useState(1);
 
   return (
-    <div className="min-h-screen bg-[#f3f6f8]">
-      {/* Nav */}
-      <nav className="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200 shadow-sm">
-        <div className="flex gap-8 items-center">
-          <span className="text-2xl font-bold text-blue-700">Skill Swap Platform</span>
-          <button className="text-blue-700 font-semibold underline underline-offset-2">Swap request</button>
-          <button className="text-blue-700 font-semibold underline underline-offset-2">Home</button>
-        </div>
-        <img src="https://ui-avatars.com/api/?name=User" alt="Profile" className="w-12 h-12 rounded-full border-2 border-blue-200" />
-      </nav>
-      <div className="max-w-3xl mx-auto mt-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex flex-col items-center">
+      <div className="bg-white rounded-2xl shadow-xl border border-white/30 max-w-4xl w-full mx-auto p-10 mt-12">
+        <h2 className="text-3xl font-bold text-blue-700 mb-8 text-center">Swap Requests</h2>
         {/* Filter/Search */}
-        <div className="flex items-center gap-4 bg-white p-4 rounded-lg shadow mb-6 border border-gray-100">
+        <div className="flex items-center gap-4 bg-white/80 p-4 rounded-xl shadow mb-6 border border-gray-100">
           <select value={status} onChange={e => setStatus(e.target.value)} className="border border-gray-300 rounded px-4 py-2 text-[#222] bg-white focus:ring-2 focus:ring-blue-200">
             <option value="Pending">Pending</option>
             <option value="Accepted">Accepted</option>
             <option value="Rejected">Rejected</option>
           </select>
           <input type="text" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} className="border border-gray-300 rounded px-4 py-2 text-[#222] bg-white flex-1 focus:ring-2 focus:ring-blue-200" />
-          <button className="bg-blue-600 px-6 py-2 rounded text-white font-semibold shadow hover:bg-blue-700 transition">search</button>
+          <button className="bg-blue-600 text-black px-6 py-2 rounded font-semibold shadow hover:bg-blue-700 transition">search</button>
         </div>
         {/* Requests */}
         <div className="space-y-6">
@@ -79,8 +71,8 @@ export default function SwapRequests() {
               <div className="flex flex-col items-end gap-2">
                 {req.status === 'Pending' && (
                   <>
-                    <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded-lg font-bold shadow transition">Accept</button>
-                    <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-lg font-bold shadow transition">Reject</button>
+                    <button className="bg-green-600 hover:bg-green-700 text-black px-4 py-1 rounded-lg font-bold shadow transition">Accept</button>
+                    <button className="bg-red-600 hover:bg-red-700 text-black px-4 py-1 rounded-lg font-bold shadow transition">Reject</button>
                   </>
                 )}
                 <div className="text-gray-500 text-sm mt-2">rating <span className="font-bold text-blue-700">{req.rating}/5</span></div>
@@ -94,7 +86,7 @@ export default function SwapRequests() {
             <button
               key={i + 1}
               onClick={() => setPage(i + 1)}
-              className={`px-3 py-1 rounded-full border border-gray-300 mx-1 font-semibold ${page === i + 1 ? 'bg-blue-600 text-white shadow' : 'bg-white text-blue-700 hover:bg-blue-50'}`}
+              className={`px-3 py-1 rounded-full border border-gray-300 mx-1 font-semibold ${page === i + 1 ? 'bg-blue-600 text-black shadow' : 'bg-white text-black hover:bg-blue-50'}`}
             >
               {i + 1}
             </button>
